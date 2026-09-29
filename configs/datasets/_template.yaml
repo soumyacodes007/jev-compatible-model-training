@@ -1,0 +1,47 @@
+# Template for adding a dataset. Any registered source works (`jevkit plugins`).
+# Fastest start:  jevkit data inspect <hub-id> --scaffold configs/datasets/<name>.yaml
+# Then:           jevkit data preview configs/datasets/<name>.yaml
+
+name: my_dataset                 # short id; used in record ids and per-source metrics
+description: What this dataset teaches the model.
+
+source:
+  type: hf                       # hf | python | your plugin; below are the hf arguments
+  path: org/dataset-name         # hub id, or "csv" / "json" / "parquet" with data_files
+  name: null                     # hub config name, if the dataset has several
+  revision: null                 # pin a commit SHA for reproducible builds
+  data_files: null               # e.g. {train: data/train.csv, test: data/test.csv}
+  train_splits: [train]          # pooled for train / dev / calibration
+  test_splits: [test]            # official holdout; [] = carve test from the train pool
+  max_rows: null                 # cap rows read per split for very large datasets
+
+task:
+  kind: choice                   # choice | score (ordered levels, never shuffled) | noul (yes/no)
+  # state: a column, a "{template} over {columns}", or a mapping of keys to either:
+  #   state: {title: title, body: "{text}"}
+  state: text
+  # question: fixed text, a column name, a "{column}" template, or a list of phrasings
+  question: Which category best describes this text?
+  label: label                   # label column
+  # label_names: how raw labels become option keys.
+  #   null  -> ClassLabel names; booleans -> yes/no; otherwise str(value)
+  #   list  -> integer label i maps to list[i]
+  #   map   -> {raw_value: key}
+  label_names: null
+  drop_labels: []                # raw label values to skip, e.g. [-1]
+  # options: key -> description the model reads. Order here is the canonical
+  # order (it matters for kind: score). Omit to use humanized keys.
+  options:
+    positive: The text is positive.
+    negative: The text is negative.
+  # More than 8 classes (A-H)? Sample distractors per example:
+  options_per_example: null      # int, or a list to pick from, e.g. [4, 6, 8]
+  hard_negatives: 0              # lexically similar distractors per example
+  none_option: null              # or {correct_rate: 0.15, distractor_rate: 0.15}
+
+sample:                          # examples per split; null = everything that remains
+  train: 2000
+  dev: 200
+  calibration: 0
+  test: 200
+  balance: true                  # round-robin across gold labels

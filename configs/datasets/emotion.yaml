@@ -1,0 +1,32 @@
+# Example of a new dataset that was not in the original mix.
+name: emotion
+description: Six-way emotion classification of English tweets.
+
+source:
+  type: hf
+  path: dair-ai/emotion
+  name: split
+  revision: cab853a1dbdf4c42c2b3ef2173804746df8825fe
+  train_splits: [train]
+  test_splits: [test]
+
+task:
+  kind: choice
+  state: text
+  question:
+    - Which emotion does the author express most strongly?
+    - What is the main emotion in this message?
+  label: label                   # ClassLabel: sadness, joy, love, anger, fear, surprise
+  options:
+    sadness: Sadness, grief, or disappointment.
+    joy: Joy, happiness, or contentment.
+    love: Love, affection, or warmth toward someone.
+    anger: Anger, irritation, or frustration.
+    fear: Fear, anxiety, or worry.
+    surprise: Surprise or astonishment.
+
+sample:
+  train: 6000
+  dev: 300
+  calibration: 0
+  test: 600

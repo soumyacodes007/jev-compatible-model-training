@@ -1,0 +1,22 @@
+name: ag_news
+description: Four-way news topic classification.
+source:
+  type: hf
+  path: fancyzhx/ag_news
+  revision: eb185aade064a813bc0b7f42de02595523103ca4
+  train_splits: [train]
+  test_splits: [test]
+task:
+  kind: choice
+  state: text
+  question:
+    - Which topic best describes this news item?
+    - Classify the main topic of this news article.
+  label: label
+  label_names: [world, sports, business, sci_tech]
+  options:
+    world: World news and international affairs.
+    sports: Sports.
+    business: Business and finance.
+    sci_tech: Science and technology.
+sample: {train: 1000, dev: 100, calibration: 100, test: 100}

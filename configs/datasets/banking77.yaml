@@ -1,0 +1,20 @@
+name: banking77
+description: 77 banking intents; 4/6/8 sampled options with hard negatives and "none".
+source:
+  type: hf
+  path: legacy-datasets/banking77
+  revision: f54121560de48f2852f90be299010d1d6dc612ec
+  train_splits: [train]
+  test_splits: [test]
+task:
+  kind: choice
+  state: text
+  question: Which listed banking intent best matches this customer's request?
+  label: label                   # ClassLabel names become keys, humanized as descriptions
+  options_per_example: [4, 6, 8]
+  hard_negatives: 2
+  none_option:
+    correct_rate: 0.15
+    distractor_rate: 0.15
+    description: None of the listed intents matches.
+sample: {train: 2000, dev: 200, calibration: 200, test: 200}

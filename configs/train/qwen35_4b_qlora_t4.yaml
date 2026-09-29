@@ -1,0 +1,44 @@
+# Low-cost preset: 4-bit QLoRA with the plain Hugging Face backend.
+# Fits Qwen3.5-4B on a 16 GB T4 (Modal T4 or a free Google Colab GPU).
+# Slower than the L40S recipe and slightly less accurate; good for experiments.
+artifact_name: jevkit-qwen35-4b-qlora
+trainer: hf
+plugins: []
+
+model:
+  name: Qwen/Qwen3.5-4B
+  revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
+  max_seq_length: 1024           # T4 memory; keep >= the build's max token count
+  load_in_4bit: true
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.0
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+optim:
+  epochs: 1.0
+  learning_rate: 1.0e-4
+  per_device_train_batch_size: 2
+  gradient_accumulation_steps: 4   # effective batch 8
+  warmup_steps: 64
+  lr_scheduler_type: cosine
+  optim: paged_adamw_8bit
+  weight_decay: 0.01
+  logging_steps: 10
+  eval_rows: 256
+  seed: 42
+
+smoke:
+  train_rows: 64
+  dev_rows: 32
+  max_steps: 10
+
+modal:
+  app_name: jevkit-train-t4
+  gpu: T4
+  timeout_hours: 12
+  data_volume: jevkit-data
+  model_volume: jevkit-models
+  cache_volume: jevkit-cache

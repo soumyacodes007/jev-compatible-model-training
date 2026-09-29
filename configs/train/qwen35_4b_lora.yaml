@@ -1,0 +1,43 @@
+# Default recipe: bf16 LoRA on Qwen3.5-4B, one L40S (~$2/hour on Modal).
+artifact_name: jevkit-qwen35-4b  # folder in the model volume; change per experiment
+trainer: unsloth                 # unsloth | hf | your plugin (`jevkit plugins`)
+plugins: []                      # modules registering custom trainers; shipped to Modal too
+
+model:
+  name: Qwen/Qwen3.5-4B
+  revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
+  max_seq_length: 2048           # keep >= the mix's max_tokens
+  load_in_4bit: false
+
+lora:
+  r: 8
+  alpha: 16
+  dropout: 0.0
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+optim:
+  epochs: 1.0
+  max_steps: -1
+  learning_rate: 5.0e-5
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 2  # effective batch 8
+  warmup_steps: 128
+  lr_scheduler_type: cosine
+  optim: adamw_8bit
+  weight_decay: 0.01
+  logging_steps: 10
+  eval_rows: 512
+  seed: 42
+
+smoke:                           # --mode smoke: quick end-to-end check before a full run
+  train_rows: 128
+  dev_rows: 64
+  max_steps: 10
+
+modal:
+  app_name: jevkit-train
+  gpu: L40S
+  timeout_hours: 8
+  data_volume: jevkit-data
+  model_volume: jevkit-models
+  cache_volume: jevkit-cache

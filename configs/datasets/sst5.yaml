@@ -1,0 +1,21 @@
+name: sst5
+description: Five-level ordered sentiment (a Score-style task; levels are never shuffled).
+source:
+  type: hf
+  path: SetFit/sst5
+  revision: e51bdcd8cd3a30da231967c1a249ba59361279a3
+  train_splits: [train]
+  test_splits: [test]
+task:
+  kind: score
+  state: text
+  question: Rate the overall sentiment on the ordered five-level scale.
+  label: label
+  label_names: [very_negative, negative, neutral, positive, very_positive]
+  options:
+    very_negative: Very negative.
+    negative: Negative.
+    neutral: Neutral.
+    positive: Positive.
+    very_positive: Very positive.
+sample: {train: 1000, dev: 100, calibration: 100, test: 100}

@@ -1,0 +1,20 @@
+name: mnli
+description: Natural language inference framed as a claim check against a passage.
+source:
+  type: hf
+  path: nyu-mll/multi_nli
+  revision: da70db2af9d09693783c3320c4249840212ee221
+  train_splits: [train]
+  test_splits: [validation_matched, validation_mismatched]
+task:
+  kind: choice
+  state: premise
+  question: "Using only the passage, classify this claim: {hypothesis}"
+  label: label
+  label_names: [entailed, neutral, contradicted]
+  drop_labels: [-1]
+  options:
+    entailed: Supported by the passage.
+    neutral: Neither supported nor contradicted; insufficient information.
+    contradicted: Contradicted by the passage.
+sample: {train: 2500, dev: 250, calibration: 250, test: 250}

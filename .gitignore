@@ -1,0 +1,22 @@
+.venv/
+.env
+.env.*
+!.env.example
+.env.modal
+__pycache__/
+.pytest_cache/
+.DS_Store
+
+# Dataset downloads and generated training files stay local.
+data/
+
+# Model weights and run output stay local unless we publish them deliberately.
+artifacts/
+outputs/
+*.safetensors
+*.gguf
+
+# Build and test caches
+*.egg-info/
+.ruff_cache/
+logs_*.txt

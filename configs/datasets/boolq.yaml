@@ -1,0 +1,17 @@
+name: boolq
+description: Yes/no questions answered from a passage.
+source:
+  type: hf
+  path: google/boolq
+  revision: 35b264d03638db9f4ce671b711558bf7ff0f80d5
+  train_splits: [train]
+  test_splits: [validation]
+task:
+  kind: noul
+  state: passage
+  question: "Answer the following yes/no question using the passage: {question}"
+  label: answer                  # bool -> yes / no
+  options:
+    "yes": "Yes."
+    "no": "No."
+sample: {train: 2000, dev: 200, calibration: 200, test: 200}

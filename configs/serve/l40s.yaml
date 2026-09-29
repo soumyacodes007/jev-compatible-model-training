@@ -1,0 +1,16 @@
+artifact_name: jevkit-qwen35-4b  # must match the train config's artifact_name
+served_model_name: jevkit-qwen35-4b
+app_name: jevkit-serve
+gpu: L40S
+model_volume: jevkit-models
+cache_volume: jevkit-cache
+api_secret: jevkit-api           # modal secret create jevkit-api --from-dotenv .env.modal
+max_model_len: 2048
+max_num_seqs: 64
+gpu_memory_utilization: 0.90
+max_concurrent_inputs: 32
+min_containers: 0
+max_containers: 1
+scaledown_minutes: 5
+reasoning_parser: qwen3
+chat_template_kwargs: {enable_thinking: false}

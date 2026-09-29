@@ -1,0 +1,11 @@
+# A mix that uses a plugin source and a plugin prompt format together.
+#   jevkit data build examples/plugin_mix.yaml
+name: plugin-demo
+plugins: [examples.plugins.refund_policy]
+prompt_format: bulleted
+tokenizer:
+  repo: Qwen/Qwen3.5-4B
+  revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
+  chat_template_kwargs: {enable_thinking: false}
+datasets:
+  - examples/refund_policy.yaml

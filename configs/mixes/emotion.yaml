@@ -1,0 +1,12 @@
+# Train only on the new dataset. (Equivalent to building configs/datasets/emotion.yaml
+# directly, but with the tokenizer and token budget spelled out.)
+name: emotion-only
+description: Single-dataset mix for dair-ai/emotion.
+tokenizer:
+  repo: Qwen/Qwen3.5-4B
+  revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
+  chat_template_kwargs: {enable_thinking: false}
+max_tokens: 2048
+prompt_format: json
+datasets:
+  - configs/datasets/emotion.yaml

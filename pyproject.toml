@@ -1,0 +1,57 @@
+[project]
+name = "jevkit"
+version = "0.1.0"
+description = "A pluggable framework for training Jev-style decision models on any dataset"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pyyaml>=6.0",
+    "openai==3.19.2",
+    "python-dotenv==1.2.3",
+    "modal==1.5.5",
+]
+
+[project.optional-dependencies]
+# Building datasets locally: Hugging Face loading plus tokenizer-rendered prompts.
+data = [
+    "datasets==4.3.0",
+    "transformers==5.5.0",
+    "huggingface_hub",
+    "jinja2",
+]
+# Training on a local CUDA GPU with the default Unsloth backend. Linux + CUDA only.
+train = [
+    "unsloth[cu128-torch2100]==2026.9.11",
+    "unsloth-zoo==2026.9.7",
+    "transformers==5.5.0",
+    "trl==0.24.0",
+    "datasets==4.3.0",
+]
+# The plain Hugging Face backend (`trainer: hf`): any CUDA GPU, incl. Colab T4 in 4-bit.
+train-hf = [
+    "torch",
+    "transformers==5.5.0",
+    "trl==0.24.0",
+    "peft",
+    "bitsandbytes",
+    "accelerate",
+    "datasets==4.3.0",
+]
+dev = ["pytest>=8", "ruff"]
+
+[project.scripts]
+jevkit = "jevkit.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jevkit"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src"]

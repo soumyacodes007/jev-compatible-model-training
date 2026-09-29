@@ -1,0 +1,25 @@
+# Five public benchmarks plus a new dataset in one training set.
+# A per-entry section (e.g. `sample:`) overrides that section of the dataset file.
+name: public-plus-emotion
+description: MNLI, BoolQ, Banking77, AG News, SST-5, and dair-ai/emotion.
+seed: 20260920
+max_tokens: 2048
+prompt_format: json               # registered prompt format (json | text | your plugin)
+plugins: []                       # modules that register custom sources/formats
+tokenizer:
+  repo: Qwen/Qwen3.5-4B
+  revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
+  chat_template_kwargs: {enable_thinking: false}
+datasets:
+  - configs/datasets/mnli.yaml
+  - configs/datasets/boolq.yaml
+  - configs/datasets/banking77.yaml
+  - configs/datasets/ag_news.yaml
+  - configs/datasets/sst5.yaml
+  - path: configs/datasets/emotion.yaml
+    sample: {train: 3000, dev: 200, test: 300}
+# Optional: merge prebuilt decision records (JSONL in the records/ format), e.g.
+# synthetic data you generated elsewhere:
+# records:
+#   - path: data/external/my_synthetic/records
+#     splits: {train: train, dev: dev}
